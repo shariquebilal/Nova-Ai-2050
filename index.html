@@ -57,7 +57,7 @@
         .btn-primary:hover { box-shadow: 0 0 20px rgba(138, 46, 255, 0.5); transform: scale(1.02); }
 
         .process-console { display: none; background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 11px; color: #0f0; text-align: left; margin-top: 15px; }
-        .download-frame { display: none; margin-top: 15px; width: 100%; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 10px; }
+        .download-frame { display: none; margin-top: 15px; width: 100%; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 15px; }
 
         .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
         .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
@@ -69,7 +69,7 @@
     <div class="stars"></div>
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>Full Stack Connected</p>
+        <p>Direct API Linked</p>
     </div>
 
     <div id="home" class="view-panel active">
@@ -80,7 +80,7 @@
             <div class="holo-card" onclick="navigate('extract')">
                 <h3>⚡ MEDIA EXTRACT</h3><p>Server Processing</p>
             </div>
-            <div class="holo-card" onclick="alert('Abhi Extractor pe focus karo bhai!')">
+            <div class="holo-card" onclick="navigate('voice')">
                 <h3>🎙️ AI VOICE</h3><p>Ready</p>
             </div>
         </div>
@@ -90,14 +90,21 @@
         <div class="tool-box">
             <div class="tool-header">⚡ MEDIA EXTRACTOR</div>
             <input type="text" id="videoUrl" class="input-dark" placeholder="Paste YouTube Link Here...">
-            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">PROCESS VIDEO 🚀</button>
+            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">BYPASS FIREWALL 🚀</button>
             
             <div class="process-console" id="console-box"></div>
             
             <div class="download-frame" id="dl-frame">
-                <h3 style="color:var(--neon-cyan); font-size:12px; margin-bottom:10px; text-align:center;">Server Ready: Choose Quality Below</h3>
-                <div id="iframe-container"></div>
+                <div id="btn-container"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="voice" class="view-panel">
+        <div class="tool-box">
+            <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
+            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type script here..."></textarea>
+            <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
         </div>
     </div>
 
@@ -115,47 +122,62 @@
             if(pageId === 'extract') document.querySelectorAll('.dock-item')[1].classList.add('active');
         }
 
+        function speakRealVoice() {
+            const text = document.getElementById('tts-input').value;
+            if(!text) return;
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
         async function startExtraction() {
             const url = document.getElementById('videoUrl').value;
             const btn = document.getElementById('extract-btn');
             const consoleBox = document.getElementById('console-box');
             const dlFrame = document.getElementById('dl-frame');
-            const iframeContainer = document.getElementById('iframe-container');
+            const btnContainer = document.getElementById('btn-container');
 
             if(!url) { alert("Bhai, pehle YouTube link daalo!"); return; }
 
-            // UI Reset
-            btn.innerText = "SENDING TO SERVER...";
+            btn.innerText = "EXTRACTING RAW FILE...";
             consoleBox.style.display = 'block';
             dlFrame.style.display = 'none';
-            consoleBox.innerHTML = "> Establishing secure connection to /api/extract...<br>";
+            consoleBox.innerHTML = "> Connecting to Direct API Core...<br>";
 
             try {
-                // Yahan FRONTEND humare BACKEND ko link bhej raha hai
-                let response = await fetch('/api/extract?url=' + encodeURIComponent(url));
+                // Call Direct Cobalt API
+                let response = await fetch("https://api.cobalt.tools/api/json", {
+                    method: "POST",
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ url: url })
+                });
+
                 let data = await response.json();
 
-                if(data.success) {
-                    consoleBox.innerHTML += `> 🟢 Server Message: ${data.message}<br>`;
-                    consoleBox.innerHTML += `> 🟢 Video ID: ${data.videoId}<br>`;
-                    consoleBox.innerHTML += `> 🟢 Generating secure download routes...<br>`;
+                if(data.url) {
+                    consoleBox.innerHTML += `> 🟢 Firewall Bypassed Successfully!<br>`;
+                    consoleBox.innerHTML += `> 🟢 Raw MP4 File Located.<br>`;
                     
                     btn.innerText = "EXTRACTION COMPLETE!";
                     btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
 
-                    // Thodi der baad download button frame dikhana
-                    setTimeout(() => {
-                        dlFrame.style.display = 'block';
-                        // Hum Server-2 (Loader.to) ka link use kar rahe hain kyunki wo stable hai
-                        iframeContainer.innerHTML = `<iframe src="${data.download_server_2}" width="100%" height="70px" scrolling="no" style="border:none; border-radius: 8px; background: transparent;"></iframe>`;
-                    }, 1000);
-
+                    dlFrame.style.display = 'block';
+                    
+                    // Asli Direct Download Button (Ad-Free)
+                    btnContainer.innerHTML = `
+                        <a href="${data.url}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #00E5FF, #8A2EFF); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif; box-shadow:0 0 20px rgba(0, 229, 255, 0.4);">
+                            ⬇️ DIRECT DOWNLOAD (MP4)
+                        </a>
+                        <p style="font-size:10px; color:#aaa; text-align:center; margin-top:10px;">Ad-Free Direct Link</p>
+                    `;
                 } else {
-                    consoleBox.innerHTML += `<br>> 🔴 Error: ${data.message}`;
+                    consoleBox.innerHTML += `<br>> 🔴 Error: Video cannot be downloaded.`;
                     btn.innerText = "FAILED";
                 }
             } catch(e) {
-                consoleBox.innerHTML += `<br>> 🔴 <span style="color:red;">Error: Backend Server Down or Timeout.</span>`;
+                consoleBox.innerHTML += `<br>> 🔴 <span style="color:red;">API Timeout. Try again.</span>`;
                 btn.innerText = "SERVER ERROR";
             }
         }

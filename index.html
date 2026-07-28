@@ -72,7 +72,7 @@
     <div class="stars"></div>
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>Hardcore Engine v2</p>
+        <p>Popup Blocker Bypassed</p>
     </div>
 
     <div id="home" class="view-panel active">
@@ -177,7 +177,7 @@
             imgEl.src = imgUrl;
         }
 
-        // Extractor Logic (Multi-Server Method)
+        // Extractor Logic (No target="_blank" anymore to stop popup blockers)
         function startExtraction() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const btn = document.getElementById('extract-btn');
@@ -213,14 +213,15 @@
                 // Server 2: SaveFrom Net
                 const saveFromUrl = "https://www.ssyoutube.com/watch?v=" + videoId;
                 
+                // MAIN FIX: Removed target="_blank" so it opens in the SAME window smoothly
                 btnContainer.innerHTML = `
                     <h3 style="color:white; font-size:12px; margin-bottom:15px;">Select Any Working Server:</h3>
                     
-                    <a href="${y2mateUrl}" target="_blank" style="display:block; margin-bottom:15px; text-align:center; background:linear-gradient(90deg, #00E5FF, #0077ff); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
+                    <a href="${y2mateUrl}" style="display:block; margin-bottom:15px; text-align:center; background:linear-gradient(90deg, #00E5FF, #0077ff); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
                         ⬇️ DOWNLOAD FROM Y2MATE
                     </a>
                     
-                    <a href="${saveFromUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #FF0055, #AA0033); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
+                    <a href="${saveFromUrl}" style="display:block; text-align:center; background:linear-gradient(90deg, #FF0055, #AA0033); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
                         ⬇️ DOWNLOAD FROM SAVEFROM
                     </a>
                 `;

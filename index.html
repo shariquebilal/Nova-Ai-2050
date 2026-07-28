@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA AI 2050 - Pro Extractor</title>
+    <title>NOVA AI 2050 - The Final Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -59,6 +59,9 @@
         .process-console { display: none; background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 11px; color: #0f0; text-align: left; margin-top: 15px; }
         .download-frame { display: none; margin-top: 15px; width: 100%; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 15px; }
 
+        .result-box { margin-top: 15px; text-align: center; width: 100%; }
+        .result-box img { width: 100%; border-radius: 10px; border: 1px solid var(--neon-cyan); display: none; margin-top: 10px; }
+
         .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
         .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
         .dock-item.active, .dock-item:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); transform: translateY(-3px); }
@@ -69,7 +72,7 @@
     <div class="stars"></div>
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>Bulletproof Engine</p>
+        <p>100% Pure Client Engine</p>
     </div>
 
     <div id="home" class="view-panel active">
@@ -78,10 +81,13 @@
         </div>
         <div class="features-grid">
             <div class="holo-card" onclick="navigate('extract')">
-                <h3>⚡ MEDIA EXTRACT</h3><p>Server Processing</p>
+                <h3>⚡ MEDIA EXTRACT</h3><p>Guaranteed Download</p>
             </div>
             <div class="holo-card" onclick="navigate('voice')">
-                <h3>🎙️ AI VOICE</h3><p>Ready</p>
+                <h3>🎙️ AI VOICE</h3><p>Text to Speech</p>
+            </div>
+            <div class="holo-card" onclick="navigate('thumbnail')">
+                <h3>🎨 THUMBNAIL</h3><p>Image Generation</p>
             </div>
         </div>
     </div>
@@ -89,8 +95,8 @@
     <div id="extract" class="view-panel">
         <div class="tool-box">
             <div class="tool-header">⚡ PRO MEDIA EXTRACTOR</div>
-            <input type="text" id="videoUrl" class="input-dark" placeholder="Paste YouTube Link Here...">
-            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">BYPASS FIREWALL 🚀</button>
+            <input type="text" id="videoUrl" class="input-dark" placeholder="Paste Any YouTube Link Here...">
+            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">PROCESS VIDEO 🚀</button>
             
             <div class="process-console" id="console-box"></div>
             
@@ -103,77 +109,119 @@
     <div id="voice" class="view-panel">
         <div class="tool-box">
             <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
-            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type script here..."></textarea>
+            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type script for your video here..."></textarea>
             <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
+        </div>
+    </div>
+
+    <div id="thumbnail" class="view-panel">
+        <div class="tool-box">
+            <div class="tool-header">🎨 REAL AI GENERATOR</div>
+            <input type="text" id="img-prompt" class="input-dark" placeholder="E.g., A high speed sports car...">
+            <button class="btn-primary" id="img-btn" onclick="generateRealImage()">GENERATE ART 🖼️</button>
+            <div class="result-box" id="img-result">
+                <p id="img-loading" style="color:var(--neon-cyan); display:none; font-size:12px;">Generating... Please wait 5 seconds.</p>
+                <img id="generated-img" src="" alt="AI Output">
+            </div>
         </div>
     </div>
 
     <div class="dock">
         <div class="dock-item active" onclick="navigate('home')">⌂<span>HOME</span></div>
         <div class="dock-item" onclick="navigate('extract')">⚡<span>EXTRACT</span></div>
+        <div class="dock-item" onclick="navigate('voice')">🎙️<span>VOICE</span></div>
     </div>
 
     <script>
+        // Smooth Navigation
         function navigate(pageId) {
             document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
+            
             document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
             if(pageId === 'home') document.querySelectorAll('.dock-item')[0].classList.add('active');
             if(pageId === 'extract') document.querySelectorAll('.dock-item')[1].classList.add('active');
+            if(pageId === 'voice') document.querySelectorAll('.dock-item')[2].classList.add('active');
         }
 
+        // Voice Generator Logic
         function speakRealVoice() {
             const text = document.getElementById('tts-input').value;
-            if(!text) return;
+            if(!text) { alert("Please type something first!"); return; }
             const utterance = new SpeechSynthesisUtterance(text);
             window.speechSynthesis.speak(utterance);
         }
 
+        // Image Generator Logic
+        function generateRealImage() {
+            const prompt = document.getElementById('img-prompt').value;
+            if(!prompt) { alert("Please enter a prompt!"); return; }
+
+            const btn = document.getElementById('img-btn');
+            const loading = document.getElementById('img-loading');
+            const imgEl = document.getElementById('generated-img');
+
+            btn.innerText = "GENERATING...";
+            loading.style.display = 'block';
+            imgEl.style.display = 'none';
+
+            const safePrompt = encodeURIComponent(prompt);
+            const imgUrl = `https://image.pollinations.ai/prompt/${safePrompt}?seed=${Math.floor(Math.random()*10000)}&width=512&height=512&nologo=true`;
+
+            imgEl.onload = function() {
+                loading.style.display = 'none';
+                imgEl.style.display = 'block';
+                btn.innerText = "GENERATE ART 🖼️";
+            };
+            imgEl.onerror = function() {
+                loading.innerText = "Error generating image. Try again.";
+                btn.innerText = "GENERATE ART 🖼️";
+            };
+            imgEl.src = imgUrl;
+        }
+
+        // Extractor Logic (Foolproof Method)
         function startExtraction() {
-            const url = document.getElementById('videoUrl').value;
+            const urlInput = document.getElementById('videoUrl').value.trim();
             const btn = document.getElementById('extract-btn');
             const consoleBox = document.getElementById('console-box');
             const dlFrame = document.getElementById('dl-frame');
             const btnContainer = document.getElementById('btn-container');
 
-            if(!url) { alert("Bhai, pehle YouTube link daalo!"); return; }
+            if(!urlInput) { alert("Bhai, pehle YouTube link daalo!"); return; }
 
-            // JS se Video ID nikalna (100% Safe and Fast)
-            let videoId = "";
-            if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
-            else if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
-            else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
+            // Regex for perfectly extracting YouTube ID from any type of link
+            const ytRegex = /(?:youtu\.be\/|youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|shorts\/)([^"&?\/\s]{11})/;
+            const match = urlInput.match(ytRegex);
 
-            if(!videoId) {
-                alert("Invalid YouTube Link!"); return;
+            if(!match || match[1].length !== 11) {
+                alert("Invalid YouTube Link! Please paste a correct URL."); return;
             }
 
+            const videoId = match[1];
+
             // UI Animations
-            btn.innerText = "BYPASSING FIREWALL...";
+            btn.innerText = "PROCESSING...";
             consoleBox.style.display = 'block';
             dlFrame.style.display = 'none';
-            consoleBox.innerHTML = "> Analyzing YouTube URL...<br>> Extracting Video ID: " + videoId + "<br>";
+            consoleBox.innerHTML = "> Analyzing URL format...<br>> Video ID Found: " + videoId + "<br>> Preparing secure redirect route...<br>";
 
-            // Fake processing time to mimic heavy engine, then instant result
             setTimeout(() => {
-                consoleBox.innerHTML += `> 🟢 Firewall Bypassed Successfully!<br>`;
-                consoleBox.innerHTML += `> 🟢 Ready for Download.<br>`;
-                
-                btn.innerText = "EXTRACTION COMPLETE!";
+                consoleBox.innerHTML += `> 🟢 Ready for Download!<br>`;
+                btn.innerText = "PROCESS COMPLETE!";
                 btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
-
                 dlFrame.style.display = 'block';
                 
-                // 100% PROVEN WORKING URL (Absolute Path)
-                const safeUrl = "https://www.y2mate.com/youtube/" + videoId;
+                // Pure redirect URL to the cleanest ad-free tool (Cobalt)
+                const safeUrl = "https://cobalt.tools/?u=" + encodeURIComponent(urlInput);
                 
                 btnContainer.innerHTML = `
                     <a href="${safeUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #00E5FF, #8A2EFF); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif; box-shadow:0 0 20px rgba(0, 229, 255, 0.4);">
-                        ⬇️ DIRECT DOWNLOAD (MP4)
+                        ⬇️ GO TO SECURE DOWNLOAD
                     </a>
-                    <p style="font-size:10px; color:#aaa; text-align:center; margin-top:10px;">Link will open in a secure download tab.</p>
+                    <p style="font-size:10px; color:#aaa; text-align:center; margin-top:10px;">Opens in a secure, ad-free download manager.</p>
                 `;
-            }, 1500);
+            }, 1000);
         }
     </script>
 </body>

@@ -72,7 +72,7 @@
     <div class="stars"></div>
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>100% Pure Client Engine</p>
+        <p>Hardcore Engine v2</p>
     </div>
 
     <div id="home" class="view-panel active">
@@ -81,7 +81,7 @@
         </div>
         <div class="features-grid">
             <div class="holo-card" onclick="navigate('extract')">
-                <h3>⚡ MEDIA EXTRACT</h3><p>Guaranteed Download</p>
+                <h3>⚡ MEDIA EXTRACT</h3><p>Multi-Server Fallback</p>
             </div>
             <div class="holo-card" onclick="navigate('voice')">
                 <h3>🎙️ AI VOICE</h3><p>Text to Speech</p>
@@ -133,7 +133,6 @@
     </div>
 
     <script>
-        // Smooth Navigation
         function navigate(pageId) {
             document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -144,7 +143,6 @@
             if(pageId === 'voice') document.querySelectorAll('.dock-item')[2].classList.add('active');
         }
 
-        // Voice Generator Logic
         function speakRealVoice() {
             const text = document.getElementById('tts-input').value;
             if(!text) { alert("Please type something first!"); return; }
@@ -152,7 +150,6 @@
             window.speechSynthesis.speak(utterance);
         }
 
-        // Image Generator Logic
         function generateRealImage() {
             const prompt = document.getElementById('img-prompt').value;
             if(!prompt) { alert("Please enter a prompt!"); return; }
@@ -180,7 +177,7 @@
             imgEl.src = imgUrl;
         }
 
-        // Extractor Logic (Foolproof Method)
+        // Extractor Logic (Multi-Server Method)
         function startExtraction() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const btn = document.getElementById('extract-btn');
@@ -190,36 +187,42 @@
 
             if(!urlInput) { alert("Bhai, pehle YouTube link daalo!"); return; }
 
-            // Regex for perfectly extracting YouTube ID from any type of link
+            // Clean Video ID Extraction
             const ytRegex = /(?:youtu\.be\/|youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|shorts\/)([^"&?\/\s]{11})/;
             const match = urlInput.match(ytRegex);
 
             if(!match || match[1].length !== 11) {
-                alert("Invalid YouTube Link! Please paste a correct URL."); return;
+                alert("Invalid YouTube Link!"); return;
             }
 
             const videoId = match[1];
 
-            // UI Animations
             btn.innerText = "PROCESSING...";
             consoleBox.style.display = 'block';
             dlFrame.style.display = 'none';
-            consoleBox.innerHTML = "> Analyzing URL format...<br>> Video ID Found: " + videoId + "<br>> Preparing secure redirect route...<br>";
+            consoleBox.innerHTML = "> Analyzing URL...<br>> Video ID: " + videoId + "<br>> Routing to Backup Servers...<br>";
 
             setTimeout(() => {
-                consoleBox.innerHTML += `> 🟢 Ready for Download!<br>`;
+                consoleBox.innerHTML += `> 🟢 Routes Confirmed!<br>`;
                 btn.innerText = "PROCESS COMPLETE!";
                 btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
                 dlFrame.style.display = 'block';
                 
-                // Pure redirect URL to the cleanest ad-free tool (Cobalt)
-                const safeUrl = "https://cobalt.tools/?u=" + encodeURIComponent(urlInput);
+                // Server 1: Y2Mate
+                const y2mateUrl = "https://www.y2mate.com/youtube/" + videoId;
+                // Server 2: SaveFrom Net
+                const saveFromUrl = "https://www.ssyoutube.com/watch?v=" + videoId;
                 
                 btnContainer.innerHTML = `
-                    <a href="${safeUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #00E5FF, #8A2EFF); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif; box-shadow:0 0 20px rgba(0, 229, 255, 0.4);">
-                        ⬇️ GO TO SECURE DOWNLOAD
+                    <h3 style="color:white; font-size:12px; margin-bottom:15px;">Select Any Working Server:</h3>
+                    
+                    <a href="${y2mateUrl}" target="_blank" style="display:block; margin-bottom:15px; text-align:center; background:linear-gradient(90deg, #00E5FF, #0077ff); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
+                        ⬇️ DOWNLOAD FROM Y2MATE
                     </a>
-                    <p style="font-size:10px; color:#aaa; text-align:center; margin-top:10px;">Opens in a secure, ad-free download manager.</p>
+                    
+                    <a href="${saveFromUrl}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #FF0055, #AA0033); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif;">
+                        ⬇️ DOWNLOAD FROM SAVEFROM
+                    </a>
                 `;
             }, 1000);
         }

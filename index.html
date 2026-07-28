@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA AI 2050 - Ultimate Creator Studio</title>
+    <title>NOVA AI 2050 - Full Stack Engine</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -67,13 +67,14 @@
         .tool-header { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
         
         .input-dark { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 12px; color: #fff; margin-bottom: 15px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
-        .input-dark:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
         
         .btn-primary { width: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--electric-purple)); border: none; padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
         .btn-primary:hover { box-shadow: 0 0 20px rgba(138, 46, 255, 0.5); transform: scale(1.02); }
 
         .result-box { margin-top: 15px; text-align: center; width: 100%; }
         .result-box img { width: 100%; border-radius: 10px; border: 1px solid var(--neon-cyan); display: none; }
+
+        .process-console { background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 12px; color: #0f0; text-align: left; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); }
 
         .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
         .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
@@ -87,7 +88,7 @@
 
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>Live Real Engine</p>
+        <p>Full Stack Connected</p>
     </div>
 
     <div id="home" class="view-panel active">
@@ -98,16 +99,16 @@
         </div>
         <div class="features-grid">
             <div class="holo-card" onclick="navigate('voice')">
-                <h3>🎙️ AI VOICE (LIVE)</h3><p>Real Text-to-Speech</p>
+                <h3>🎙️ AI VOICE</h3><p>Real Text-to-Speech</p>
             </div>
             <div class="holo-card" onclick="navigate('thumbnail')">
-                <h3>🎨 THUMBNAIL (LIVE)</h3><p>Real Image Generation</p>
+                <h3>🎨 THUMBNAIL</h3><p>Real Image Gen</p>
             </div>
-            <div class="holo-card" onclick="alert('Iske liye Node.js Backend lagega bhai. Sirf HTML se nahi hoga.')">
-                <h3>🎬 AI STUDIO</h3><p>Requires Backend</p>
+            <div class="holo-card" onclick="navigate('extract')">
+                <h3>⚡ EXTRACTOR</h3><p>Server Link Test</p>
             </div>
-            <div class="holo-card" onclick="alert('Iske liye Node.js Backend lagega bhai. Sirf HTML se nahi hoga.')">
-                <h3>⚡ EXTRACTOR</h3><p>Requires Backend</p>
+            <div class="holo-card" onclick="alert('Bhai pehle Extractor ko backend se test kar lete hain, fir isko banayenge!')">
+                <h3>🎬 AI STUDIO</h3><p>Coming Soon</p>
             </div>
         </div>
     </div>
@@ -115,7 +116,7 @@
     <div id="voice" class="view-panel">
         <div class="tool-box">
             <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
-            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type anything here and the AI will speak it aloud..."></textarea>
+            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type anything here..."></textarea>
             <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
         </div>
     </div>
@@ -123,23 +124,33 @@
     <div id="thumbnail" class="view-panel">
         <div class="tool-box">
             <div class="tool-header">🎨 REAL AI GENERATOR</div>
-            <input type="text" id="img-prompt" class="input-dark" placeholder="E.g., A futuristic racing car in neon city...">
+            <input type="text" id="img-prompt" class="input-dark" placeholder="E.g., A futuristic racing car...">
             <button class="btn-primary" id="img-btn" onclick="generateRealImage()">GENERATE ART 🖼️</button>
             <div class="result-box" id="img-result">
-                <p id="img-loading" style="color:var(--neon-cyan); display:none; font-size:12px;">Generating from Cloud API (Wait 5 sec)...</p>
+                <p id="img-loading" style="color:var(--neon-cyan); display:none; font-size:12px;">Generating...</p>
                 <img id="generated-img" src="" alt="AI Output">
             </div>
+        </div>
+    </div>
+
+    <div id="extract" class="view-panel">
+        <div class="tool-box">
+            <div class="tool-header">⚡ SERVER CONNECTION</div>
+            <p style="color: #aaa; font-size: 11px; margin-bottom: 20px; text-align: center;">Frontend to Backend Ping Test</p>
+            
+            <button class="btn-primary" id="ping-btn" onclick="pingBackend()">CONNECT TO SERVER 🚀</button>
+            
+            <div class="process-console" id="server-response" style="display:none; margin-top:20px;"></div>
         </div>
     </div>
 
     <div class="dock">
         <div class="dock-item active" onclick="navigate('home')">⌂<span>HOME</span></div>
         <div class="dock-item" onclick="navigate('voice')">🎙️<span>VOICE</span></div>
-        <div class="dock-item" onclick="navigate('thumbnail')">🎨<span>ART</span></div>
+        <div class="dock-item" onclick="navigate('extract')">⚡<span>SERVER</span></div>
     </div>
 
     <script>
-        // Router
         function navigate(pageId) {
             document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
@@ -147,26 +158,19 @@
             document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
             if(pageId === 'home') document.querySelectorAll('.dock-item')[0].classList.add('active');
             if(pageId === 'voice') document.querySelectorAll('.dock-item')[1].classList.add('active');
-            if(pageId === 'thumbnail') document.querySelectorAll('.dock-item')[2].classList.add('active');
+            if(pageId === 'extract') document.querySelectorAll('.dock-item')[2].classList.add('active');
         }
 
-        // REAL WORKING TTS (Browser Built-in Engine)
         function speakRealVoice() {
             const text = document.getElementById('tts-input').value;
-            if(!text) { alert("Bhai, kuch type toh karo!"); return; }
-            
+            if(!text) { alert("Type something!"); return; }
             const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 1.0;
-            utterance.pitch = 1.0;
             window.speechSynthesis.speak(utterance);
         }
 
-        // REAL WORKING AI IMAGE (Using Free Pollinations API)
         function generateRealImage() {
             const prompt = document.getElementById('img-prompt').value;
-            if(!prompt) { alert("Bhai, prompt likho!"); return; }
-
+            if(!prompt) { alert("Enter a prompt!"); return; }
             const btn = document.getElementById('img-btn');
             const loading = document.getElementById('img-loading');
             const imgEl = document.getElementById('generated-img');
@@ -175,20 +179,42 @@
             loading.style.display = 'block';
             imgEl.style.display = 'none';
 
-            // Clean the prompt for URL
             const safePrompt = encodeURIComponent(prompt);
-            const randomSeed = Math.floor(Math.random() * 100000);
-            
-            // Real API Call
-            const imgUrl = `https://image.pollinations.ai/prompt/${safePrompt}?seed=${randomSeed}&width=512&height=512&nologo=true`;
+            const imgUrl = `https://image.pollinations.ai/prompt/${safePrompt}?seed=${Math.random()}&width=512&height=512&nologo=true`;
 
             imgEl.onload = function() {
                 loading.style.display = 'none';
                 imgEl.style.display = 'block';
                 btn.innerText = "GENERATE ART 🖼️";
             };
-
             imgEl.src = imgUrl;
+        }
+
+        // FULL STACK MAGIC: Fetching Data from our Node.js Backend
+        async function pingBackend() {
+            const resBox = document.getElementById('server-response');
+            const btn = document.getElementById('ping-btn');
+            
+            btn.innerText = "PULLING DATA...";
+            resBox.style.display = 'block';
+            resBox.innerHTML = "> Fetching data from /api/test...<br>";
+
+            try {
+                // Backend ko call kar rahe hain
+                let response = await fetch('/api/test');
+                let data = await response.json();
+                
+                // Server se aaya hua data screen par likh rahe hain
+                resBox.innerHTML += `<br>> 🟢 <b>Status:</b> ${data.status}`;
+                resBox.innerHTML += `<br>> 💬 <b>Message:</b> ${data.message}`;
+                resBox.innerHTML += `<br>> ⏱️ <b>Time:</b> ${data.server_time}`;
+                
+                btn.innerText = "CONNECTION SUCCESSFUL!";
+                btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
+            } catch(e) {
+                resBox.innerHTML += `<br>> 🔴 <span style="color:red;">Error: Server Connection Failed.</span>`;
+                btn.innerText = "FAILED";
+            }
         }
     </script>
 </body>

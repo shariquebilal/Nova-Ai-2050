@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA AI 2050 - Creator Studio</title>
+    <title>NOVA AI 2050 - Ultimate Creator Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,8 +11,9 @@
             --neon-cyan: #00E5FF;
             --electric-purple: #8A2EFF;
             --text-main: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.05);
             --glass-border: rgba(0, 229, 255, 0.2);
+            --panel-bg: rgba(0, 0, 0, 0.7);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,157 +33,162 @@
         }
 
         .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: -1;
             background: transparent url('https://cdn.pixabay.com/photo/2016/01/27/15/25/space-1164579_960_720.png') repeat top center;
             animation: move-stars 200s linear infinite; opacity: 0.3;
         }
+        @keyframes move-stars { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
 
-        @keyframes move-stars {
-            from { background-position: 0 0; }
-            to { background-position: -10000px 5000px; }
-        }
+        .header { text-align: center; margin-top: 30px; z-index: 10; cursor: pointer; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); }
+        .header p { font-size: 10px; color: var(--electric-purple); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
 
-        .header { text-align: center; margin-top: 40px; z-index: 10; }
-        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); text-transform: uppercase; }
-        .header p { font-size: 12px; color: var(--neon-cyan); letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
+        .view-panel { display: none; width: 95%; max-width: 600px; margin-top: 20px; z-index: 10; animation: fadeIn 0.4s ease-out; padding-bottom: 100px; }
+        .view-panel.active { display: flex; flex-direction: column; align-items: center; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Dashboard View */
-        #dashboard-view { display: block; width: 100%; display: flex; flex-direction: column; align-items: center; }
-        
-        .orb-container { position: relative; width: 200px; height: 200px; margin: 30px auto; display: flex; justify-content: center; align-items: center; z-index: 10; }
-        .core-orb { width: 80px; height: 80px; background: radial-gradient(circle, #fff, var(--neon-cyan)); border-radius: 50%; box-shadow: 0 0 50px var(--neon-cyan); animation: pulse 3s infinite alternate; }
-        .ring { position: absolute; width: 180px; height: 180px; border-radius: 50%; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--electric-purple); animation: spin 4s linear infinite; }
-        .ring-2 { width: 220px; height: 220px; border-radius: 50%; border-left: 2px solid var(--neon-cyan); border-right: 2px solid var(--electric-purple); animation: spin-reverse 6s linear infinite; }
-
-        @keyframes pulse { 100% { transform: scale(1.1); box-shadow: 0 0 70px var(--neon-cyan), 0 0 120px var(--electric-purple); } }
+        /* Dashboard Styles */
+        .orb-container { position: relative; width: 160px; height: 160px; margin: 20px auto; display: flex; justify-content: center; align-items: center; }
+        .core-orb { width: 60px; height: 60px; background: radial-gradient(circle, #fff, var(--neon-cyan)); border-radius: 50%; box-shadow: 0 0 40px var(--neon-cyan); animation: pulse 3s infinite alternate; }
+        .ring { position: absolute; width: 140px; height: 140px; border-radius: 50%; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--electric-purple); animation: spin 4s linear infinite; }
+        .ring-2 { width: 180px; height: 180px; border-radius: 50%; border-left: 2px solid var(--neon-cyan); border-right: 2px solid var(--electric-purple); animation: spin-reverse 6s linear infinite; }
+        @keyframes pulse { 100% { transform: scale(1.1); box-shadow: 0 0 60px var(--neon-cyan), 0 0 100px var(--electric-purple); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
 
-        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 90%; max-width: 600px; z-index: 10; padding-bottom: 120px; }
-        .holo-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
-        .holo-card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 25px rgba(0, 229, 255, 0.2); transform: translateY(-5px); }
-        .holo-card h3 { font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--neon-cyan); margin-bottom: 5px; }
-        .holo-card p { font-size: 11px; color: rgba(255, 255, 255, 0.6); }
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-top: 20px; }
+        .holo-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .holo-card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); transform: translateY(-3px); }
+        .holo-card h3 { font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--neon-cyan); margin-bottom: 5px; }
+        .holo-card p { font-size: 10px; color: rgba(255, 255, 255, 0.6); }
 
-        /* Tool Panel View */
-        #tool-view { display: none; width: 90%; max-width: 500px; margin-top: 30px; z-index: 10; background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--neon-cyan); border-radius: 20px; padding: 30px; box-shadow: 0 0 40px rgba(0, 229, 255, 0.1); text-align: center; }
-        .tool-title { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; }
-        .input-box { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px; color: white; font-size: 14px; margin-bottom: 20px; outline: none; }
-        .input-box:focus { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
+        .tool-box { width: 100%; background: var(--panel-bg); backdrop-filter: blur(15px); border: 1px solid var(--electric-purple); border-radius: 15px; padding: 25px; box-shadow: 0 0 30px rgba(138, 46, 255, 0.1); }
+        .tool-header { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
         
-        .action-btn { background: linear-gradient(45deg, var(--neon-cyan), #0077ff); border: none; color: #000; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); margin-bottom: 15px; }
-        .back-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; transition: 0.3s; }
-        .back-btn:hover { border-color: white; }
+        .input-dark { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 12px; color: #fff; margin-bottom: 15px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
+        .input-dark:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+        
+        .btn-primary { width: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--electric-purple)); border: none; padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
+        .btn-primary:hover { box-shadow: 0 0 20px rgba(138, 46, 255, 0.5); transform: scale(1.02); }
 
-        /* Widget Container */
-        #download-widget { margin-top: 15px; width: 100%; min-height: 80px; border-radius: 10px; overflow: hidden; display: none; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 15px; }
+        .result-box { margin-top: 15px; text-align: center; width: 100%; }
+        .result-box img { width: 100%; border-radius: 10px; border: 1px solid var(--neon-cyan); display: none; }
 
-        .dock { position: fixed; bottom: 30px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 40px; padding: 15px 30px; display: flex; gap: 30px; z-index: 100; }
-        .dock-item { color: rgba(255, 255, 255, 0.5); font-size: 20px; text-align: center; cursor: pointer; }
-        .dock-item.active { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.2); }
-        .dock-item span { display: block; font-family: 'Inter', sans-serif; font-size: 9px; margin-top: 5px; text-transform: uppercase; }
+        .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
+        .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .dock-item.active, .dock-item:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); transform: translateY(-3px); }
+        .dock-item span { display: block; font-size: 9px; margin-top: 4px; font-family: 'Orbitron', sans-serif; }
     </style>
 </head>
 <body>
 
     <div class="stars"></div>
 
-    <div class="header">
+    <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
-        <p>Create Beyond Imagination</p>
+        <p>Live Real Engine</p>
     </div>
 
-    <div id="dashboard-view">
+    <div id="home" class="view-panel active">
         <div class="orb-container">
             <div class="core-orb"></div>
             <div class="ring"></div>
             <div class="ring-2"></div>
         </div>
-
         <div class="features-grid">
-            <div class="holo-card">
-                <h3>🎬 AI STUDIO</h3>
-                <p>Holographic Video Editor</p>
+            <div class="holo-card" onclick="navigate('voice')">
+                <h3>🎙️ AI VOICE (LIVE)</h3><p>Real Text-to-Speech</p>
             </div>
-            <div class="holo-card" onclick="openTool()">
-                <h3>⚡ MEDIA EXTRACT</h3>
-                <p>Bypass & Clone Assets</p>
+            <div class="holo-card" onclick="navigate('thumbnail')">
+                <h3>🎨 THUMBNAIL (LIVE)</h3><p>Real Image Generation</p>
             </div>
-            <div class="holo-card">
-                <h3>🎨 AI THUMBNAIL</h3>
-                <p>Neural Image Generation</p>
+            <div class="holo-card" onclick="alert('Iske liye Node.js Backend lagega bhai. Sirf HTML se nahi hoga.')">
+                <h3>🎬 AI STUDIO</h3><p>Requires Backend</p>
             </div>
-            <div class="holo-card">
-                <h3>🎙️ AI VOICE</h3>
-                <p>Neural Text-to-Speech</p>
+            <div class="holo-card" onclick="alert('Iske liye Node.js Backend lagega bhai. Sirf HTML se nahi hoga.')">
+                <h3>⚡ EXTRACTOR</h3><p>Requires Backend</p>
             </div>
         </div>
     </div>
 
-    <div id="tool-view">
-        <h2 class="tool-title">⚡ ON-SITE EXTRACTOR</h2>
-        <p style="color: #aaa; font-size: 12px; margin-bottom: 20px;">Direct Render, No Redirects</p>
-        
-        <input type="text" id="videoUrl" class="input-box" placeholder="Paste YouTube Link Here...">
-        
-        <button class="action-btn" onclick="extractMedia()">RENDER DOWNLOAD BUTTON</button>
-        
-        <div id="download-widget"></div>
+    <div id="voice" class="view-panel">
+        <div class="tool-box">
+            <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
+            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type anything here and the AI will speak it aloud..."></textarea>
+            <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
+        </div>
+    </div>
 
-        <button class="back-btn" style="margin-top: 15px;" onclick="goBack()">← Back to Dashboard</button>
+    <div id="thumbnail" class="view-panel">
+        <div class="tool-box">
+            <div class="tool-header">🎨 REAL AI GENERATOR</div>
+            <input type="text" id="img-prompt" class="input-dark" placeholder="E.g., A futuristic racing car in neon city...">
+            <button class="btn-primary" id="img-btn" onclick="generateRealImage()">GENERATE ART 🖼️</button>
+            <div class="result-box" id="img-result">
+                <p id="img-loading" style="color:var(--neon-cyan); display:none; font-size:12px;">Generating from Cloud API (Wait 5 sec)...</p>
+                <img id="generated-img" src="" alt="AI Output">
+            </div>
+        </div>
     </div>
 
     <div class="dock">
-        <div class="dock-item active">⌂<span>Home</span></div>
-        <div class="dock-item">✦<span>Studio</span></div>
-        <div class="dock-item">∞<span>Projects</span></div>
+        <div class="dock-item active" onclick="navigate('home')">⌂<span>HOME</span></div>
+        <div class="dock-item" onclick="navigate('voice')">🎙️<span>VOICE</span></div>
+        <div class="dock-item" onclick="navigate('thumbnail')">🎨<span>ART</span></div>
     </div>
 
     <script>
-        function openTool() {
-            document.getElementById('dashboard-view').style.display = 'none';
-            document.getElementById('tool-view').style.display = 'block';
-            document.getElementById('download-widget').style.display = 'none';
-            document.getElementById('download-widget').innerHTML = '';
-            document.getElementById('videoUrl').value = '';
+        // Router
+        function navigate(pageId) {
+            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            
+            document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
+            if(pageId === 'home') document.querySelectorAll('.dock-item')[0].classList.add('active');
+            if(pageId === 'voice') document.querySelectorAll('.dock-item')[1].classList.add('active');
+            if(pageId === 'thumbnail') document.querySelectorAll('.dock-item')[2].classList.add('active');
         }
 
-        function goBack() {
-            document.getElementById('tool-view').style.display = 'none';
-            document.getElementById('dashboard-view').style.display = 'flex';
+        // REAL WORKING TTS (Browser Built-in Engine)
+        function speakRealVoice() {
+            const text = document.getElementById('tts-input').value;
+            if(!text) { alert("Bhai, kuch type toh karo!"); return; }
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            utterance.rate = 1.0;
+            utterance.pitch = 1.0;
+            window.speechSynthesis.speak(utterance);
         }
 
-        function extractMedia() {
-            const url = document.getElementById('videoUrl').value;
-            const widgetBox = document.getElementById('download-widget');
+        // REAL WORKING AI IMAGE (Using Free Pollinations API)
+        function generateRealImage() {
+            const prompt = document.getElementById('img-prompt').value;
+            if(!prompt) { alert("Bhai, prompt likho!"); return; }
+
+            const btn = document.getElementById('img-btn');
+            const loading = document.getElementById('img-loading');
+            const imgEl = document.getElementById('generated-img');
+
+            btn.innerText = "GENERATING...";
+            loading.style.display = 'block';
+            imgEl.style.display = 'none';
+
+            // Clean the prompt for URL
+            const safePrompt = encodeURIComponent(prompt);
+            const randomSeed = Math.floor(Math.random() * 100000);
             
-            if(!url) {
-                alert("Bhai, link toh paste karo!");
-                return;
-            }
-            
-            // Extracting Video ID securely
-            let videoId = "";
-            if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
-            else if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
-            else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
+            // Real API Call
+            const imgUrl = `https://image.pollinations.ai/prompt/${safePrompt}?seed=${randomSeed}&width=512&height=512&nologo=true`;
 
-            if(!videoId) {
-                alert("Invalid Link! YouTube ki sahi link daalo.");
-                return;
-            }
+            imgEl.onload = function() {
+                loading.style.display = 'none';
+                imgEl.style.display = 'block';
+                btn.innerText = "GENERATE ART 🖼️";
+            };
 
-            // Using Loader.to API which is stable and allows iframe embedding without CORS errors
-            const fullYtUrl = `https://www.youtube.com/watch?v=${videoId}`;
-            const loaderUrl = `https://loader.to/api/button/?url=${encodeURIComponent(fullYtUrl)}&f=720`;
-
-            widgetBox.style.display = 'block';
-            widgetBox.innerHTML = `
-                <h3 style="color:var(--neon-cyan); font-size:12px; margin-bottom:10px;">HQ Server Connected:</h3>
-                <iframe src="${loaderUrl}" width="100%" height="70px" scrolling="no" style="border:none; border-radius: 8px; background: transparent;"></iframe>
-            `;
+            imgEl.src = imgUrl;
         }
     </script>
 </body>

@@ -48,7 +48,7 @@
         .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); text-transform: uppercase; }
         .header p { font-size: 12px; color: var(--neon-cyan); letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
 
-        /* Dashboard View Classes */
+        /* Dashboard View */
         #dashboard-view { display: block; width: 100%; display: flex; flex-direction: column; align-items: center; }
         
         .orb-container { position: relative; width: 200px; height: 200px; margin: 30px auto; display: flex; justify-content: center; align-items: center; z-index: 10; }
@@ -66,7 +66,7 @@
         .holo-card h3 { font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--neon-cyan); margin-bottom: 5px; }
         .holo-card p { font-size: 11px; color: rgba(255, 255, 255, 0.6); }
 
-        /* Tool Panel View (Hidden by Default) */
+        /* Tool Panel View */
         #tool-view { display: none; width: 90%; max-width: 500px; margin-top: 30px; z-index: 10; background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--neon-cyan); border-radius: 20px; padding: 30px; box-shadow: 0 0 40px rgba(0, 229, 255, 0.1); text-align: center; }
         .tool-title { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; }
         .input-box { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px; color: white; font-size: 14px; margin-bottom: 20px; outline: none; }
@@ -75,6 +75,9 @@
         .action-btn { background: linear-gradient(45deg, var(--neon-cyan), #0077ff); border: none; color: #000; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); margin-bottom: 15px; }
         .back-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; transition: 0.3s; }
         .back-btn:hover { border-color: white; }
+
+        /* Widget Container */
+        #download-widget { margin-top: 15px; width: 100%; min-height: 80px; border-radius: 10px; overflow: hidden; display: none; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 10px; }
 
         .dock { position: fixed; bottom: 30px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 40px; padding: 15px 30px; display: flex; gap: 30px; z-index: 100; }
         .dock-item { color: rgba(255, 255, 255, 0.5); font-size: 20px; text-align: center; cursor: pointer; }
@@ -103,7 +106,7 @@
                 <h3>🎬 AI STUDIO</h3>
                 <p>Holographic Video Editor</p>
             </div>
-            <div class="holo-card" onclick="openTool('Media Extractor')">
+            <div class="holo-card" onclick="openTool()">
                 <h3>⚡ MEDIA EXTRACT</h3>
                 <p>Bypass & Clone Assets</p>
             </div>
@@ -119,13 +122,16 @@
     </div>
 
     <div id="tool-view">
-        <h2 class="tool-title">⚡ MEDIA EXTRACTOR</h2>
-        <p style="color: #aaa; font-size: 12px; margin-bottom: 20px;">Universal YouTube & Shorts Bypass</p>
+        <h2 class="tool-title">⚡ ON-SITE EXTRACTOR</h2>
+        <p style="color: #aaa; font-size: 12px; margin-bottom: 20px;">Direct Render, No Redirects</p>
         
         <input type="text" id="videoUrl" class="input-box" placeholder="Paste YouTube Link Here...">
         
-        <button class="action-btn" onclick="extractMedia()">EXTRACT & DOWNLOAD</button>
-        <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
+        <button class="action-btn" onclick="extractMedia()">RENDER DOWNLOAD BUTTON</button>
+        
+        <div id="download-widget"></div>
+
+        <button class="back-btn" style="margin-top: 15px;" onclick="goBack()">← Back to Dashboard</button>
     </div>
 
     <div class="dock">
@@ -135,10 +141,12 @@
     </div>
 
     <script>
-        // ENGINE LOGIC: Switching screens smoothly
-        function openTool(toolName) {
+        function openTool() {
             document.getElementById('dashboard-view').style.display = 'none';
             document.getElementById('tool-view').style.display = 'block';
+            document.getElementById('download-widget').style.display = 'none';
+            document.getElementById('download-widget').innerHTML = '';
+            document.getElementById('videoUrl').value = '';
         }
 
         function goBack() {
@@ -148,12 +156,13 @@
 
         function extractMedia() {
             const url = document.getElementById('videoUrl').value;
+            const widgetBox = document.getElementById('download-widget');
+            
             if(!url) {
                 alert("Bhai, link toh paste karo!");
                 return;
             }
             
-            // Extracting Video ID securely
             let videoId = "";
             if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
             else if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
@@ -164,8 +173,10 @@
                 return;
             }
 
-            // Direct Safe Redirection for Download without Black Screen
-            window.open(`https://en.savefrom.net/1-youtube-downloader-7/?url=https://www.youtube.com/watch?v=${videoId}`, '_blank');
+            // Instead of redirecting, we render a download button IFRAME securely inside our own page.
+            widgetBox.style.display = 'block';
+            widgetBox.innerHTML = `<h3 style="color:var(--neon-cyan); font-size:12px; margin-bottom:10px;">Select Quality to Download:</h3>
+                                   <iframe src="https://api.vevioz.com/@api/button/mp4/${videoId}" width="100%" height="100px" scrolling="no" style="border:none; border-radius: 8px;"></iframe>`;
         }
     </script>
 </body>

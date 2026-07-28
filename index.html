@@ -15,11 +15,7 @@
             --glass-border: rgba(0, 229, 255, 0.2);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: var(--bg-color);
@@ -35,18 +31,12 @@
                 radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.15), transparent 25%);
         }
 
-        /* Animated Stars Background */
         .stars {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: -1;
             background: transparent url('https://cdn.pixabay.com/photo/2016/01/27/15/25/space-1164579_960_720.png') repeat top center;
-            animation: move-stars 200s linear infinite;
-            opacity: 0.3;
+            animation: move-stars 200s linear infinite; opacity: 0.3;
         }
 
         @keyframes move-stars {
@@ -54,207 +44,42 @@
             to { background-position: -10000px 5000px; }
         }
 
-        /* Top Header */
-        .header {
-            text-align: center;
-            margin-top: 40px;
-            z-index: 10;
-        }
+        .header { text-align: center; margin-top: 40px; z-index: 10; }
+        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 32px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); text-transform: uppercase; }
+        .header p { font-size: 12px; color: var(--neon-cyan); letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; }
 
-        .header h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 32px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            color: var(--text-main);
-            text-shadow: 0 0 20px var(--neon-cyan);
-            text-transform: uppercase;
-        }
+        /* Dashboard View Classes */
+        #dashboard-view { display: block; width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        .orb-container { position: relative; width: 200px; height: 200px; margin: 30px auto; display: flex; justify-content: center; align-items: center; z-index: 10; }
+        .core-orb { width: 80px; height: 80px; background: radial-gradient(circle, #fff, var(--neon-cyan)); border-radius: 50%; box-shadow: 0 0 50px var(--neon-cyan); animation: pulse 3s infinite alternate; }
+        .ring { position: absolute; width: 180px; height: 180px; border-radius: 50%; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--electric-purple); animation: spin 4s linear infinite; }
+        .ring-2 { width: 220px; height: 220px; border-radius: 50%; border-left: 2px solid var(--neon-cyan); border-right: 2px solid var(--electric-purple); animation: spin-reverse 6s linear infinite; }
 
-        .header p {
-            font-size: 12px;
-            color: var(--neon-cyan);
-            letter-spacing: 2px;
-            margin-top: 5px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
-        /* Central AI Orb */
-        .orb-container {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 40px auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .core-orb {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, #fff, var(--neon-cyan));
-            border-radius: 50%;
-            box-shadow: 0 0 50px var(--neon-cyan), 0 0 100px var(--neon-cyan);
-            animation: pulse 3s infinite alternate;
-        }
-
-        .ring {
-            position: absolute;
-            width: 180px;
-            height: 180px;
-            border: 2px solid transparent;
-            border-radius: 50%;
-            border-top: 2px solid var(--neon-cyan);
-            border-bottom: 2px solid var(--electric-purple);
-            animation: spin 4s linear infinite;
-        }
-
-        .ring-2 {
-            width: 220px;
-            height: 220px;
-            animation: spin-reverse 6s linear infinite;
-            border-left: 2px solid var(--neon-cyan);
-            border-right: 2px solid var(--electric-purple);
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(0.9); box-shadow: 0 0 30px var(--neon-cyan); }
-            100% { transform: scale(1.1); box-shadow: 0 0 70px var(--neon-cyan), 0 0 120px var(--electric-purple); }
-        }
-
+        @keyframes pulse { 100% { transform: scale(1.1); box-shadow: 0 0 70px var(--neon-cyan), 0 0 120px var(--electric-purple); } }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
 
-        /* Holographic Features Grid */
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            width: 90%;
-            max-width: 600px;
-            z-index: 10;
-            padding-bottom: 120px;
-        }
+        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 90%; max-width: 600px; z-index: 10; padding-bottom: 120px; }
+        .holo-card { background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--glass-border); border-radius: 15px; padding: 20px; text-align: center; transition: 0.3s; cursor: pointer; }
+        .holo-card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 25px rgba(0, 229, 255, 0.2); transform: translateY(-5px); }
+        .holo-card h3 { font-family: 'Orbitron', sans-serif; font-size: 14px; color: var(--neon-cyan); margin-bottom: 5px; }
+        .holo-card p { font-size: 11px; color: rgba(255, 255, 255, 0.6); }
 
-        .holo-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 32px 0 rgba(0, 229, 255, 0.05);
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
+        /* Tool Panel View (Hidden by Default) */
+        #tool-view { display: none; width: 90%; max-width: 500px; margin-top: 30px; z-index: 10; background: var(--glass-bg); backdrop-filter: blur(15px); border: 1px solid var(--neon-cyan); border-radius: 20px; padding: 30px; box-shadow: 0 0 40px rgba(0, 229, 255, 0.1); text-align: center; }
+        .tool-title { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 20px; margin-bottom: 20px; letter-spacing: 2px; }
+        .input-box { width: 100%; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--glass-border); border-radius: 10px; padding: 15px; color: white; font-size: 14px; margin-bottom: 20px; outline: none; }
+        .input-box:focus { border-color: var(--neon-cyan); box-shadow: 0 0 15px rgba(0, 229, 255, 0.3); }
+        
+        .action-btn { background: linear-gradient(45deg, var(--neon-cyan), #0077ff); border: none; color: #000; font-weight: bold; padding: 15px; width: 100%; border-radius: 10px; font-size: 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 20px rgba(0, 229, 255, 0.4); margin-bottom: 15px; }
+        .back-btn { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; padding: 10px; width: 100%; border-radius: 10px; cursor: pointer; transition: 0.3s; }
+        .back-btn:hover { border-color: white; }
 
-        .holo-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(0, 229, 255, 0.1), transparent);
-            transform: rotate(45deg);
-            transition: 0.5s;
-            opacity: 0;
-        }
-
-        .holo-card:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .holo-card:hover::before {
-            opacity: 1;
-            top: 100%;
-            left: 100%;
-        }
-
-        .holo-card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
-            color: var(--neon-cyan);
-            margin-bottom: 5px;
-            letter-spacing: 1px;
-        }
-
-        .holo-card p {
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Holographic AI Assistant */
-        .ai-assistant {
-            margin-bottom: 30px;
-            background: linear-gradient(90deg, transparent, rgba(138, 46, 255, 0.2), transparent);
-            padding: 10px 30px;
-            border-left: 3px solid var(--electric-purple);
-            border-right: 3px solid var(--electric-purple);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            color: #fff;
-            text-align: center;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* Bottom Floating Dock */
-        .dock {
-            position: fixed;
-            bottom: 30px;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 229, 255, 0.3);
-            border-radius: 40px;
-            padding: 15px 30px;
-            display: flex;
-            gap: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 229, 255, 0.2);
-            z-index: 100;
-        }
-
-        .dock-item {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-            text-align: center;
-        }
-
-        .dock-item.active, .dock-item:hover {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 15px var(--neon-cyan);
-            transform: scale(1.2);
-        }
-
-        .dock-item span {
-            display: block;
-            font-family: 'Inter', sans-serif;
-            font-size: 9px;
-            margin-top: 5px;
-            text-transform: uppercase;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 400px) {
-            .features-grid { grid-template-columns: 1fr; }
-            .dock { gap: 20px; padding: 15px 20px; }
-        }
+        .dock { position: fixed; bottom: 30px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.3); border-radius: 40px; padding: 15px 30px; display: flex; gap: 30px; z-index: 100; }
+        .dock-item { color: rgba(255, 255, 255, 0.5); font-size: 20px; text-align: center; cursor: pointer; }
+        .dock-item.active { color: var(--neon-cyan); text-shadow: 0 0 15px var(--neon-cyan); transform: scale(1.2); }
+        .dock-item span { display: block; font-family: 'Inter', sans-serif; font-size: 9px; margin-top: 5px; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -266,79 +91,81 @@
         <p>Create Beyond Imagination</p>
     </div>
 
-    <div class="orb-container" onclick="activateOrb()">
-        <div class="core-orb"></div>
-        <div class="ring"></div>
-        <div class="ring-2"></div>
+    <div id="dashboard-view">
+        <div class="orb-container">
+            <div class="core-orb"></div>
+            <div class="ring"></div>
+            <div class="ring-2"></div>
+        </div>
+
+        <div class="features-grid">
+            <div class="holo-card">
+                <h3>🎬 AI STUDIO</h3>
+                <p>Holographic Video Editor</p>
+            </div>
+            <div class="holo-card" onclick="openTool('Media Extractor')">
+                <h3>⚡ MEDIA EXTRACT</h3>
+                <p>Bypass & Clone Assets</p>
+            </div>
+            <div class="holo-card">
+                <h3>🎨 AI THUMBNAIL</h3>
+                <p>Neural Image Generation</p>
+            </div>
+            <div class="holo-card">
+                <h3>🎙️ AI VOICE</h3>
+                <p>Neural Text-to-Speech</p>
+            </div>
+        </div>
     </div>
 
-    <div class="ai-assistant" id="assistant-text">
-        SYSTEM ONLINE. WELCOME BACK, CREATOR.
-    </div>
-
-    <div class="features-grid">
-        <div class="holo-card" onclick="openStudio()">
-            <h3>🎬 AI STUDIO</h3>
-            <p>Holographic Video Editor</p>
-        </div>
-        <div class="holo-card">
-            <h3>⚡ MEDIA EXTRACT</h3>
-            <p>Bypass & Clone Assets</p>
-        </div>
-        <div class="holo-card">
-            <h3>🎨 AI THUMBNAIL</h3>
-            <p>Neural Image Generation</p>
-        </div>
-        <div class="holo-card">
-            <h3>🎙️ AI VOICE</h3>
-            <p>Neural Text-to-Speech</p>
-        </div>
-        <div class="holo-card">
-            <h3>🗜️ COMPRESSION</h3>
-            <p>Quantum 8K Rendering</p>
-        </div>
-        <div class="holo-card">
-            <h3>⚙️ SYSTEM</h3>
-            <p>Core Configuration</p>
-        </div>
+    <div id="tool-view">
+        <h2 class="tool-title">⚡ MEDIA EXTRACTOR</h2>
+        <p style="color: #aaa; font-size: 12px; margin-bottom: 20px;">Universal YouTube & Shorts Bypass</p>
+        
+        <input type="text" id="videoUrl" class="input-box" placeholder="Paste YouTube Link Here...">
+        
+        <button class="action-btn" onclick="extractMedia()">EXTRACT & DOWNLOAD</button>
+        <button class="back-btn" onclick="goBack()">← Back to Dashboard</button>
     </div>
 
     <div class="dock">
-        <div class="dock-item active">
-            ⌂
-            <span>Home</span>
-        </div>
-        <div class="dock-item">
-            ✦
-            <span>Studio</span>
-        </div>
-        <div class="dock-item">
-            ∞
-            <span>Projects</span>
-        </div>
-        <div class="dock-item">
-            ◎
-            <span>Profile</span>
-        </div>
+        <div class="dock-item active">⌂<span>Home</span></div>
+        <div class="dock-item">✦<span>Studio</span></div>
+        <div class="dock-item">∞<span>Projects</span></div>
     </div>
 
     <script>
-        // Simple Interaction Scripts for Futuristic Feel
-        function activateOrb() {
-            const assistant = document.getElementById('assistant-text');
-            assistant.style.color = '#00E5FF';
-            assistant.style.textShadow = '0 0 10px #00E5FF';
-            assistant.innerText = "ACCESSING NEURAL NETWORK...";
-            
-            setTimeout(() => {
-                assistant.innerText = "READY FOR COMMAND.";
-            }, 2000);
+        // ENGINE LOGIC: Switching screens smoothly
+        function openTool(toolName) {
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('tool-view').style.display = 'block';
         }
 
-        function openStudio() {
-            const assistant = document.getElementById('assistant-text');
-            assistant.innerText = "INITIALIZING AI STUDIO ENVIRONMENT...";
-            // Here you can add logic to switch to the video editor view
+        function goBack() {
+            document.getElementById('tool-view').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'flex';
+        }
+
+        function extractMedia() {
+            const url = document.getElementById('videoUrl').value;
+            if(!url) {
+                alert("Bhai, link toh paste karo!");
+                return;
+            }
+            
+            // Extracting Video ID securely
+            let videoId = "";
+            if (url.includes("shorts/")) videoId = url.split("shorts/")[1].split("?")[0];
+            else if (url.includes("v=")) videoId = url.split("v=")[1].split("&")[0];
+            else if (url.includes("youtu.be/")) videoId = url.split("youtu.be/")[1].split("?")[0];
+
+            if(!videoId) {
+                alert("Invalid Link! YouTube ki sahi link daalo.");
+                return;
+            }
+
+            // Direct Safe Redirection for Download without Black Screen
+            window.open(`https://en.savefrom.net/1-youtube-downloader-7/?url=https://www.youtube.com/watch?v=${videoId}`, '_blank');
         }
     </script>
 </body>

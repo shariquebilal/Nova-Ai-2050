@@ -1,186 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA AI 2050 - Ultimate Extractor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #02030A; --neon-cyan: #00E5FF; --electric-purple: #8A2EFF;
-            --text-main: #ffffff; --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(0, 229, 255, 0.2); --panel-bg: rgba(0, 0, 0, 0.7);
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: var(--bg-color); color: var(--text-main);
-            font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
-            background-image: radial-gradient(circle at 15% 50%, rgba(138, 46, 255, 0.15), transparent 25%),
-                              radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.15), transparent 25%);
-        }
-        .stars {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
-            background: transparent url('https://cdn.pixabay.com/photo/2016/01/27/15/25/space-1164579_960_720.png') repeat top center;
-            animation: move-stars 200s linear infinite; opacity: 0.3;
-        }
-        @keyframes move-stars { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
-        .header { text-align: center; margin-top: 30px; z-index: 10; cursor: pointer; }
-        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); }
-        .header p { font-size: 10px; color: var(--electric-purple); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
+export default async function handler(req, res) {
+    const videoUrl = req.query.url;
+
+    if (!videoUrl) {
+        return res.status(400).json({ success: false, message: "Bhai, link toh daalo!" });
+    }
+
+    try {
+        // VERCEL SERVER direct API se baat kar raha hai (No Browser Block)
+        const response = await fetch("https://api.cobalt.tools/api/json", {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "User-Agent": "NOVA-AI-Server/1.0"
+            },
+            body: JSON.stringify({ url: videoUrl })
+        });
         
-        .view-panel { display: none; width: 95%; max-width: 600px; margin-top: 20px; z-index: 10; animation: fadeIn 0.4s ease-out; padding-bottom: 100px; }
-        .view-panel.active { display: flex; flex-direction: column; align-items: center; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        const data = await response.json();
         
-        .orb-container { position: relative; width: 160px; height: 160px; margin: 20px auto; display: flex; justify-content: center; align-items: center; }
-        .core-orb { width: 60px; height: 60px; background: radial-gradient(circle, #fff, var(--neon-cyan)); border-radius: 50%; box-shadow: 0 0 40px var(--neon-cyan); animation: pulse 3s infinite alternate; }
-        .ring { position: absolute; width: 140px; height: 140px; border-radius: 50%; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--electric-purple); animation: spin 4s linear infinite; }
-        .ring-2 { width: 180px; height: 180px; border-radius: 50%; border-left: 2px solid var(--neon-cyan); border-right: 2px solid var(--electric-purple); animation: spin-reverse 6s linear infinite; }
-        @keyframes pulse { 100% { transform: scale(1.1); box-shadow: 0 0 60px var(--neon-cyan), 0 0 100px var(--electric-purple); } }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
-
-        .features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-top: 20px; }
-        .holo-card { background: var(--glass-bg); backdrop-filter: blur(10px); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px 10px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .holo-card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); transform: translateY(-3px); }
-        .holo-card h3 { font-family: 'Orbitron', sans-serif; font-size: 13px; color: var(--neon-cyan); margin-bottom: 5px; }
-        .holo-card p { font-size: 10px; color: rgba(255, 255, 255, 0.6); }
-
-        .tool-box { width: 100%; background: var(--panel-bg); backdrop-filter: blur(15px); border: 1px solid var(--electric-purple); border-radius: 15px; padding: 25px; box-shadow: 0 0 30px rgba(138, 46, 255, 0.1); }
-        .tool-header { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
-        
-        .input-dark { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 12px; color: #fff; margin-bottom: 15px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
-        .input-dark:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-        
-        .btn-primary { width: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--electric-purple)); border: none; padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
-        .btn-primary:hover { box-shadow: 0 0 20px rgba(138, 46, 255, 0.5); transform: scale(1.02); }
-
-        .process-console { display: none; background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 11px; color: #0f0; text-align: left; margin-top: 15px; }
-        .download-frame { display: none; margin-top: 15px; width: 100%; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 15px; }
-
-        .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
-        .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .dock-item.active, .dock-item:hover { color: var(--neon-cyan); text-shadow: 0 0 10px var(--neon-cyan); transform: translateY(-3px); }
-        .dock-item span { display: block; font-size: 9px; margin-top: 4px; font-family: 'Orbitron', sans-serif; }
-    </style>
-</head>
-<body>
-    <div class="stars"></div>
-    <div class="header" onclick="navigate('home')">
-        <h1>NOVA AI</h1>
-        <p>Direct API Linked</p>
-    </div>
-
-    <div id="home" class="view-panel active">
-        <div class="orb-container">
-            <div class="core-orb"></div><div class="ring"></div><div class="ring-2"></div>
-        </div>
-        <div class="features-grid">
-            <div class="holo-card" onclick="navigate('extract')">
-                <h3>⚡ MEDIA EXTRACT</h3><p>Server Processing</p>
-            </div>
-            <div class="holo-card" onclick="navigate('voice')">
-                <h3>🎙️ AI VOICE</h3><p>Ready</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="extract" class="view-panel">
-        <div class="tool-box">
-            <div class="tool-header">⚡ MEDIA EXTRACTOR</div>
-            <input type="text" id="videoUrl" class="input-dark" placeholder="Paste YouTube Link Here...">
-            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">BYPASS FIREWALL 🚀</button>
-            
-            <div class="process-console" id="console-box"></div>
-            
-            <div class="download-frame" id="dl-frame">
-                <div id="btn-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="voice" class="view-panel">
-        <div class="tool-box">
-            <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
-            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type script here..."></textarea>
-            <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
-        </div>
-    </div>
-
-    <div class="dock">
-        <div class="dock-item active" onclick="navigate('home')">⌂<span>HOME</span></div>
-        <div class="dock-item" onclick="navigate('extract')">⚡<span>EXTRACT</span></div>
-    </div>
-
-    <script>
-        function navigate(pageId) {
-            document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
-            if(pageId === 'home') document.querySelectorAll('.dock-item')[0].classList.add('active');
-            if(pageId === 'extract') document.querySelectorAll('.dock-item')[1].classList.add('active');
+        if (data.url) {
+            // API ne raw mp4 link de di
+            res.status(200).json({ success: true, downloadUrl: data.url });
+        } else if (data.text) {
+            // API ka koi error message
+            res.status(400).json({ success: false, message: data.text });
+        } else {
+            res.status(400).json({ success: false, message: "API ne reject kar diya." });
         }
-
-        function speakRealVoice() {
-            const text = document.getElementById('tts-input').value;
-            if(!text) return;
-            const utterance = new SpeechSynthesisUtterance(text);
-            window.speechSynthesis.speak(utterance);
-        }
-
-        async function startExtraction() {
-            const url = document.getElementById('videoUrl').value;
-            const btn = document.getElementById('extract-btn');
-            const consoleBox = document.getElementById('console-box');
-            const dlFrame = document.getElementById('dl-frame');
-            const btnContainer = document.getElementById('btn-container');
-
-            if(!url) { alert("Bhai, pehle YouTube link daalo!"); return; }
-
-            btn.innerText = "EXTRACTING RAW FILE...";
-            consoleBox.style.display = 'block';
-            dlFrame.style.display = 'none';
-            consoleBox.innerHTML = "> Connecting to Direct API Core...<br>";
-
-            try {
-                // Call Direct Cobalt API
-                let response = await fetch("https://api.cobalt.tools/api/json", {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ url: url })
-                });
-
-                let data = await response.json();
-
-                if(data.url) {
-                    consoleBox.innerHTML += `> 🟢 Firewall Bypassed Successfully!<br>`;
-                    consoleBox.innerHTML += `> 🟢 Raw MP4 File Located.<br>`;
-                    
-                    btn.innerText = "EXTRACTION COMPLETE!";
-                    btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
-
-                    dlFrame.style.display = 'block';
-                    
-                    // Asli Direct Download Button (Ad-Free)
-                    btnContainer.innerHTML = `
-                        <a href="${data.url}" target="_blank" style="display:block; text-align:center; background:linear-gradient(90deg, #00E5FF, #8A2EFF); color:white; padding:15px; border-radius:8px; text-decoration:none; font-weight:bold; font-family:'Orbitron', sans-serif; box-shadow:0 0 20px rgba(0, 229, 255, 0.4);">
-                            ⬇️ DIRECT DOWNLOAD (MP4)
-                        </a>
-                        <p style="font-size:10px; color:#aaa; text-align:center; margin-top:10px;">Ad-Free Direct Link</p>
-                    `;
-                } else {
-                    consoleBox.innerHTML += `<br>> 🔴 Error: Video cannot be downloaded.`;
-                    btn.innerText = "FAILED";
-                }
-            } catch(e) {
-                consoleBox.innerHTML += `<br>> 🔴 <span style="color:red;">API Timeout. Try again.</span>`;
-                btn.innerText = "SERVER ERROR";
-            }
-        }
-    </script>
-</body>
-</html>
+    } catch (error) {
+        res.status(500).json({ success: false, message: "Backend Server Crash ho gaya!" });
+    }
+}

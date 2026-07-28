@@ -3,52 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NOVA AI 2050 - Full Stack Engine</title>
+    <title>NOVA AI 2050 - Ultimate Extractor</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #02030A;
-            --neon-cyan: #00E5FF;
-            --electric-purple: #8A2EFF;
-            --text-main: #ffffff;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(0, 229, 255, 0.2);
-            --panel-bg: rgba(0, 0, 0, 0.7);
+            --bg-color: #02030A; --neon-cyan: #00E5FF; --electric-purple: #8A2EFF;
+            --text-main: #ffffff; --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(0, 229, 255, 0.2); --panel-bg: rgba(0, 0, 0, 0.7);
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(138, 46, 255, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.15), transparent 25%);
+            background-color: var(--bg-color); color: var(--text-main);
+            font-family: 'Inter', sans-serif; overflow-x: hidden; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            background-image: radial-gradient(circle at 15% 50%, rgba(138, 46, 255, 0.15), transparent 25%),
+                              radial-gradient(circle at 85% 30%, rgba(0, 229, 255, 0.15), transparent 25%);
         }
-
         .stars {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: -1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1;
             background: transparent url('https://cdn.pixabay.com/photo/2016/01/27/15/25/space-1164579_960_720.png') repeat top center;
             animation: move-stars 200s linear infinite; opacity: 0.3;
         }
         @keyframes move-stars { from { background-position: 0 0; } to { background-position: -10000px 5000px; } }
-
         .header { text-align: center; margin-top: 30px; z-index: 10; cursor: pointer; }
         .header h1 { font-family: 'Orbitron', sans-serif; font-size: 28px; font-weight: 900; letter-spacing: 4px; text-shadow: 0 0 20px var(--neon-cyan); }
         .header p { font-size: 10px; color: var(--electric-purple); letter-spacing: 2px; text-transform: uppercase; margin-top: 5px; }
-
+        
         .view-panel { display: none; width: 95%; max-width: 600px; margin-top: 20px; z-index: 10; animation: fadeIn 0.4s ease-out; padding-bottom: 100px; }
         .view-panel.active { display: flex; flex-direction: column; align-items: center; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Dashboard Styles */
+        
         .orb-container { position: relative; width: 160px; height: 160px; margin: 20px auto; display: flex; justify-content: center; align-items: center; }
         .core-orb { width: 60px; height: 60px; background: radial-gradient(circle, #fff, var(--neon-cyan)); border-radius: 50%; box-shadow: 0 0 40px var(--neon-cyan); animation: pulse 3s infinite alternate; }
         .ring { position: absolute; width: 140px; height: 140px; border-radius: 50%; border-top: 2px solid var(--neon-cyan); border-bottom: 2px solid var(--electric-purple); animation: spin 4s linear infinite; }
@@ -67,14 +51,13 @@
         .tool-header { font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 18px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px; text-align: center; }
         
         .input-dark { width: 100%; background: rgba(0,0,0,0.6); border: 1px solid rgba(0,229,255,0.3); border-radius: 8px; padding: 12px; color: #fff; margin-bottom: 15px; font-family: 'Inter', sans-serif; outline: none; transition: 0.3s; }
+        .input-dark:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px rgba(0,229,255,0.2); }
         
         .btn-primary { width: 100%; background: linear-gradient(90deg, var(--neon-cyan), var(--electric-purple)); border: none; padding: 12px; border-radius: 8px; color: #fff; font-weight: bold; font-family: 'Orbitron', sans-serif; letter-spacing: 1px; cursor: pointer; transition: 0.3s; }
         .btn-primary:hover { box-shadow: 0 0 20px rgba(138, 46, 255, 0.5); transform: scale(1.02); }
 
-        .result-box { margin-top: 15px; text-align: center; width: 100%; }
-        .result-box img { width: 100%; border-radius: 10px; border: 1px solid var(--neon-cyan); display: none; }
-
-        .process-console { background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 12px; color: #0f0; text-align: left; box-shadow: 0 0 15px rgba(0, 255, 0, 0.2); }
+        .process-console { display: none; background: rgba(0, 20, 0, 0.8); border: 1px solid #0f0; border-radius: 8px; padding: 15px; font-family: monospace; font-size: 11px; color: #0f0; text-align: left; margin-top: 15px; }
+        .download-frame { display: none; margin-top: 15px; width: 100%; border-radius: 10px; overflow: hidden; background: rgba(0,0,0,0.4); border: 1px dashed var(--neon-cyan); padding: 10px; }
 
         .dock { position: fixed; bottom: 20px; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(20px); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 30px; padding: 10px 25px; display: flex; gap: 40px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.9); }
         .dock-item { color: rgba(255, 255, 255, 0.4); font-size: 18px; text-align: center; cursor: pointer; transition: 0.3s; }
@@ -83,9 +66,7 @@
     </style>
 </head>
 <body>
-
     <div class="stars"></div>
-
     <div class="header" onclick="navigate('home')">
         <h1>NOVA AI</h1>
         <p>Full Stack Connected</p>
@@ -93,127 +74,89 @@
 
     <div id="home" class="view-panel active">
         <div class="orb-container">
-            <div class="core-orb"></div>
-            <div class="ring"></div>
-            <div class="ring-2"></div>
+            <div class="core-orb"></div><div class="ring"></div><div class="ring-2"></div>
         </div>
         <div class="features-grid">
-            <div class="holo-card" onclick="navigate('voice')">
-                <h3>🎙️ AI VOICE</h3><p>Real Text-to-Speech</p>
-            </div>
-            <div class="holo-card" onclick="navigate('thumbnail')">
-                <h3>🎨 THUMBNAIL</h3><p>Real Image Gen</p>
-            </div>
             <div class="holo-card" onclick="navigate('extract')">
-                <h3>⚡ EXTRACTOR</h3><p>Server Link Test</p>
+                <h3>⚡ MEDIA EXTRACT</h3><p>Server Processing</p>
             </div>
-            <div class="holo-card" onclick="alert('Bhai pehle Extractor ko backend se test kar lete hain, fir isko banayenge!')">
-                <h3>🎬 AI STUDIO</h3><p>Coming Soon</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="voice" class="view-panel">
-        <div class="tool-box">
-            <div class="tool-header">🎙️ REAL VOICE SYNTHESIS</div>
-            <textarea id="tts-input" class="input-dark" rows="4" placeholder="Type anything here..."></textarea>
-            <button class="btn-primary" onclick="speakRealVoice()">SPEAK NOW 🔊</button>
-        </div>
-    </div>
-
-    <div id="thumbnail" class="view-panel">
-        <div class="tool-box">
-            <div class="tool-header">🎨 REAL AI GENERATOR</div>
-            <input type="text" id="img-prompt" class="input-dark" placeholder="E.g., A futuristic racing car...">
-            <button class="btn-primary" id="img-btn" onclick="generateRealImage()">GENERATE ART 🖼️</button>
-            <div class="result-box" id="img-result">
-                <p id="img-loading" style="color:var(--neon-cyan); display:none; font-size:12px;">Generating...</p>
-                <img id="generated-img" src="" alt="AI Output">
+            <div class="holo-card" onclick="alert('Abhi Extractor pe focus karo bhai!')">
+                <h3>🎙️ AI VOICE</h3><p>Ready</p>
             </div>
         </div>
     </div>
 
     <div id="extract" class="view-panel">
         <div class="tool-box">
-            <div class="tool-header">⚡ SERVER CONNECTION</div>
-            <p style="color: #aaa; font-size: 11px; margin-bottom: 20px; text-align: center;">Frontend to Backend Ping Test</p>
+            <div class="tool-header">⚡ MEDIA EXTRACTOR</div>
+            <input type="text" id="videoUrl" class="input-dark" placeholder="Paste YouTube Link Here...">
+            <button class="btn-primary" id="extract-btn" onclick="startExtraction()">PROCESS VIDEO 🚀</button>
             
-            <button class="btn-primary" id="ping-btn" onclick="pingBackend()">CONNECT TO SERVER 🚀</button>
+            <div class="process-console" id="console-box"></div>
             
-            <div class="process-console" id="server-response" style="display:none; margin-top:20px;"></div>
+            <div class="download-frame" id="dl-frame">
+                <h3 style="color:var(--neon-cyan); font-size:12px; margin-bottom:10px; text-align:center;">Server Ready: Choose Quality Below</h3>
+                <div id="iframe-container"></div>
+            </div>
         </div>
     </div>
 
     <div class="dock">
         <div class="dock-item active" onclick="navigate('home')">⌂<span>HOME</span></div>
-        <div class="dock-item" onclick="navigate('voice')">🎙️<span>VOICE</span></div>
-        <div class="dock-item" onclick="navigate('extract')">⚡<span>SERVER</span></div>
+        <div class="dock-item" onclick="navigate('extract')">⚡<span>EXTRACT</span></div>
     </div>
 
     <script>
         function navigate(pageId) {
             document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            
             document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
             if(pageId === 'home') document.querySelectorAll('.dock-item')[0].classList.add('active');
-            if(pageId === 'voice') document.querySelectorAll('.dock-item')[1].classList.add('active');
-            if(pageId === 'extract') document.querySelectorAll('.dock-item')[2].classList.add('active');
+            if(pageId === 'extract') document.querySelectorAll('.dock-item')[1].classList.add('active');
         }
 
-        function speakRealVoice() {
-            const text = document.getElementById('tts-input').value;
-            if(!text) { alert("Type something!"); return; }
-            const utterance = new SpeechSynthesisUtterance(text);
-            window.speechSynthesis.speak(utterance);
-        }
+        async function startExtraction() {
+            const url = document.getElementById('videoUrl').value;
+            const btn = document.getElementById('extract-btn');
+            const consoleBox = document.getElementById('console-box');
+            const dlFrame = document.getElementById('dl-frame');
+            const iframeContainer = document.getElementById('iframe-container');
 
-        function generateRealImage() {
-            const prompt = document.getElementById('img-prompt').value;
-            if(!prompt) { alert("Enter a prompt!"); return; }
-            const btn = document.getElementById('img-btn');
-            const loading = document.getElementById('img-loading');
-            const imgEl = document.getElementById('generated-img');
+            if(!url) { alert("Bhai, pehle YouTube link daalo!"); return; }
 
-            btn.innerText = "GENERATING...";
-            loading.style.display = 'block';
-            imgEl.style.display = 'none';
-
-            const safePrompt = encodeURIComponent(prompt);
-            const imgUrl = `https://image.pollinations.ai/prompt/${safePrompt}?seed=${Math.random()}&width=512&height=512&nologo=true`;
-
-            imgEl.onload = function() {
-                loading.style.display = 'none';
-                imgEl.style.display = 'block';
-                btn.innerText = "GENERATE ART 🖼️";
-            };
-            imgEl.src = imgUrl;
-        }
-
-        // FULL STACK MAGIC: Fetching Data from our Node.js Backend
-        async function pingBackend() {
-            const resBox = document.getElementById('server-response');
-            const btn = document.getElementById('ping-btn');
-            
-            btn.innerText = "PULLING DATA...";
-            resBox.style.display = 'block';
-            resBox.innerHTML = "> Fetching data from /api/test...<br>";
+            // UI Reset
+            btn.innerText = "SENDING TO SERVER...";
+            consoleBox.style.display = 'block';
+            dlFrame.style.display = 'none';
+            consoleBox.innerHTML = "> Establishing secure connection to /api/extract...<br>";
 
             try {
-                // Backend ko call kar rahe hain
-                let response = await fetch('/api/test');
+                // Yahan FRONTEND humare BACKEND ko link bhej raha hai
+                let response = await fetch('/api/extract?url=' + encodeURIComponent(url));
                 let data = await response.json();
-                
-                // Server se aaya hua data screen par likh rahe hain
-                resBox.innerHTML += `<br>> 🟢 <b>Status:</b> ${data.status}`;
-                resBox.innerHTML += `<br>> 💬 <b>Message:</b> ${data.message}`;
-                resBox.innerHTML += `<br>> ⏱️ <b>Time:</b> ${data.server_time}`;
-                
-                btn.innerText = "CONNECTION SUCCESSFUL!";
-                btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
+
+                if(data.success) {
+                    consoleBox.innerHTML += `> 🟢 Server Message: ${data.message}<br>`;
+                    consoleBox.innerHTML += `> 🟢 Video ID: ${data.videoId}<br>`;
+                    consoleBox.innerHTML += `> 🟢 Generating secure download routes...<br>`;
+                    
+                    btn.innerText = "EXTRACTION COMPLETE!";
+                    btn.style.background = "linear-gradient(90deg, #00FF00, #008800)";
+
+                    // Thodi der baad download button frame dikhana
+                    setTimeout(() => {
+                        dlFrame.style.display = 'block';
+                        // Hum Server-2 (Loader.to) ka link use kar rahe hain kyunki wo stable hai
+                        iframeContainer.innerHTML = `<iframe src="${data.download_server_2}" width="100%" height="70px" scrolling="no" style="border:none; border-radius: 8px; background: transparent;"></iframe>`;
+                    }, 1000);
+
+                } else {
+                    consoleBox.innerHTML += `<br>> 🔴 Error: ${data.message}`;
+                    btn.innerText = "FAILED";
+                }
             } catch(e) {
-                resBox.innerHTML += `<br>> 🔴 <span style="color:red;">Error: Server Connection Failed.</span>`;
-                btn.innerText = "FAILED";
+                consoleBox.innerHTML += `<br>> 🔴 <span style="color:red;">Error: Backend Server Down or Timeout.</span>`;
+                btn.innerText = "SERVER ERROR";
             }
         }
     </script>
